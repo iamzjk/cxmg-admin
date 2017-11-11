@@ -4,6 +4,9 @@ export function login(username, password) {
   return fetch({
     url: '/user/login',
     method: 'post',
+    headers: {
+      'Content-type': 'application/json'
+    },
     data: {
       username,
       password
