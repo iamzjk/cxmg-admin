@@ -27,24 +27,24 @@ export const constantRouterMap = [
     children: [{ path: 'dashboard', component: _import('dashboard/index') }]
   },
 
-  {
-    path: '/example',
-    component: Layout,
-    redirect: 'noredirect',
-    name: 'Example',
-    icon: 'zujian',
-    children: [
-      { path: 'index', name: 'Form', icon: 'zonghe', component: _import('page/form') }
-    ]
-  },
+  // {
+  //   path: '/example',
+  //   component: Layout,
+  //   redirect: 'noredirect',
+  //   name: 'Example',
+  //   icon: 'zujian',
+  //   children: [
+  //     { path: 'index', name: 'Form', icon: 'zonghe', component: _import('page/form') }
+  //   ]
+  // },
 
   {
     path: '/table',
     component: Layout,
-    redirect: '/table/index',
-    icon: 'tubiao',
+    redirect: '/table/order',
+    icon: 'table',
     noDropdown: true,
-    children: [{ path: 'index', name: 'Table', component: _import('table/index'), meta: { role: ['admin'] }}]
+    children: [{ path: 'order', name: '订单', component: _import('table/order'), meta: { role: ['admin'] }}]
   },
 
   { path: '*', redirect: '/404', hidden: true }

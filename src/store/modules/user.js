@@ -5,7 +5,7 @@ const user = {
   state: {
     token: getToken(),
     name: '',
-    avatar: '',
+    avatar: '@/assets/avatar/jelfsony.jpg',
     roles: []
   },
 
