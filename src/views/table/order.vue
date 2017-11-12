@@ -240,8 +240,21 @@ export default {
       }
       this.handleFilter()
     },
+    resetTempRow() {
+      this.tempRow = {
+        client: '',
+        phone: '',
+        product: '',
+        price: 0,
+        cost: 0,
+        quantity: '',
+        tracking: '',
+        carrier: '',
+        edit: true,
+      }
+    },
     handleCreate() {
-      // this.resetTemp()
+      this.resetTempRow()
       this.tempRow.created_time = moment().format('YYYY-MM-DD')
       this.list.unshift(this.tempRow)
     },
