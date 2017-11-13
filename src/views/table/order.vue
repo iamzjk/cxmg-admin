@@ -35,6 +35,11 @@
         type="selection"
         width="55">
       </el-table-column> -->
+      <!-- <el-table-column label="ID" align="center">
+        <template scope="scope">
+          <span v-show="!scope.row.edit">{{ scope.row.order_id }}</span>
+       </template>
+      </el-table-column> -->
       <el-table-column label="客户" align="center">
         <template scope="scope">
           <el-input v-show="scope.row.edit" size="small" v-model="scope.row.client"></el-input>
@@ -80,7 +85,7 @@
       <el-table-column label="单号" align="center" width="130">
         <template scope="scope">
           <el-input v-show="scope.row.edit" size="small" v-model="scope.row.tracking"></el-input>
-          <span v-show="!scope.row.edit">{{ scope.row.tracking }}</span>
+          <el-button type="text" @click="showTrackingStatus" v-show="!scope.row.edit">{{ scope.row.tracking }}</el-button>
         </template>
       </el-table-column>
       <el-table-column align="center" label="订单日期" width="130">
@@ -209,6 +214,7 @@ export default {
           updateOrder(newRow)
         } else {
           createOrder(newRow)
+          this.fetchData()
         }
       }
       row.edit = !row.edit
@@ -261,6 +267,9 @@ export default {
     handleToggleTracking() {
       // this.listQuery.showNoTracking = !this.listQuery.showNoTracking
       this.handleFilter()
+    },
+    showTrackingStatus() {
+
     }
   }
 }
