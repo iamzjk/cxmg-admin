@@ -85,7 +85,15 @@
       <el-table-column label="单号" align="center" width="130">
         <template scope="scope">
           <el-input v-show="scope.row.edit" size="small" v-model="scope.row.tracking"></el-input>
-          <el-button type="text" @click="showTrackingStatus" v-show="!scope.row.edit">{{ scope.row.tracking }}</el-button>
+          <el-button style="user-select: text;" type="text" @click="showTrackingStatus(scope.row)" v-show="!scope.row.edit">{{ scope.row.tracking }}</el-button>
+          <!-- tracking status dialog -->
+          <el-dialog title="快递状态" :visible.sync="scope.row.trackingStatusVisible">
+            <span style="margin-left: 15px; float: left; font-weight: bold;" slot="title">{{scope.row.client}} {{scope.row.tracking}}</span>
+            <el-table v-loading="trackingLoading" :data="trackingStatusTemp" element-loading-text="拼命查询中...">
+              <el-table-column property="time" label="日期时间" width="180" align= "center"></el-table-column>
+              <el-table-column property="status" label="状态" align= "center"></el-table-column>
+            </el-table>
+          </el-dialog>
         </template>
       </el-table-column>
       <el-table-column align="center" label="订单日期" width="130">
@@ -106,11 +114,29 @@
 
 <script>
 import { getList, updateOrder, deleteOrder, createOrder } from '@/api/table'
+import { getTrackingStatus} from '@/api/tracking'
 import moment from 'moment'
 
 export default {
   data() {
     return {
+      gridData: [{
+        time: '2016-05-02',
+        status: 'John Smith',
+        address: 'No.1518,  Jinshajiang Road, Putuo District'
+      }, {
+        time: '2016-05-04',
+        status: 'John Smith',
+        address: 'No.1518,  Jinshajiang Road, Putuo District'
+      }, {
+        time: '2016-05-01',
+        status: 'John Smith',
+        address: 'No.1518,  Jinshajiang Road, Putuo District'
+      }, {
+        time: '2016-05-03',
+        status: 'John Smith',
+        address: 'No.1518,  Jinshajiang Road, Putuo District'
+      }],
       list: null,
       listLoading: true,
       listQuery: {
@@ -148,6 +174,9 @@ export default {
         value: 'product',
         label: '品名'
       }],
+      // tracking status temp storage
+      trackingStatusTemp: [],
+      trackingLoading: true,
       // date picker
       showDatePicker: false,
       datePickerOptions: {
@@ -199,6 +228,7 @@ export default {
         const orders = response.data.orders
         this.list = orders.map(v => {
           this.$set(v, 'edit', false)
+          this.$set(v, 'trackingStatusVisible', false)
           v.created_time = moment(v.created_time).format('YYYY-MM-DD')
           return v
         })
@@ -210,6 +240,7 @@ export default {
         const newRow = Object.assign({}, row)
         delete newRow.edit
         delete newRow.created_time
+        delete newRow.trackingStatusVisible
         if (row.order_id) {
           updateOrder(newRow)
         } else {
@@ -268,8 +299,14 @@ export default {
       // this.listQuery.showNoTracking = !this.listQuery.showNoTracking
       this.handleFilter()
     },
-    showTrackingStatus() {
-
+    showTrackingStatus(row) {
+      this.trackingStatusTemp = []
+      this.trackingLoading = true
+      row.trackingStatusVisible = true
+      getTrackingStatus(row.tracking, row.carrier).then(response => {
+        this.trackingStatusTemp = response.data.statuses
+        this.trackingLoading = false
+      })
     }
   }
 }
@@ -284,6 +321,9 @@ export default {
   zoom: 80%;
   font-size: 14px;
 } */
+.el-dialog {
+  top: 10%;
+}
 .el-select .el-input {
   width: 90px;
 }

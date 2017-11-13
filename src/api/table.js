@@ -9,7 +9,6 @@ export function getList(query) {
 }
 
 export function createOrder(data) {
-  console.log(data)
   return fetch({
     url: '/order',
     method: 'post',
