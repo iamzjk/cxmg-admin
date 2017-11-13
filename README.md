@@ -1,3 +1,9 @@
+# cxmg-admin
+
+This project is based on [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)
+
+
+
 # vueAdmin-template
 
 > A minimal vue admin template with Element UI & axios & iconfont & permission control & lint
