@@ -88,11 +88,16 @@
           <el-button style="user-select: text;" type="text" @click="showTrackingStatus(scope.row)" v-show="!scope.row.edit">{{ scope.row.tracking }}</el-button>
           <!-- tracking status dialog -->
           <el-dialog title="快递状态" :visible.sync="scope.row.trackingStatusVisible">
-            <span style="margin-left: 15px; float: left; font-weight: bold;" slot="title">{{scope.row.client}} {{scope.row.tracking}}</span>
+            <span slot="title">
+              <div style="margin-left: 15px; float: left; font-weight: bold;">{{scope.row.client}} {{scope.row.tracking}}</div>
+            </span>
             <el-table v-loading="trackingLoading" :data="trackingStatusTemp" element-loading-text="拼命查询中...">
               <el-table-column property="time" label="日期时间" width="180" align= "center"></el-table-column>
               <el-table-column property="status" label="状态" align= "center"></el-table-column>
             </el-table>
+            <span slot="footer">
+              <el-button type="default" size="medium" @click="showTrackingStatus(scope.row)">刷新</el-button>
+            </span>
           </el-dialog>
         </template>
       </el-table-column>
@@ -113,7 +118,7 @@
 </template>
 
 <script>
-import { getList, updateOrder, deleteOrder, createOrder } from '@/api/table'
+import { getList, updateOrder, deleteOrder, createOrder } from '@/api/order'
 import { getTrackingStatus} from '@/api/tracking'
 import moment from 'moment'
 
@@ -306,6 +311,11 @@ export default {
       getTrackingStatus(row.tracking, row.carrier).then(response => {
         this.trackingStatusTemp = response.data.statuses
         this.trackingLoading = false
+      })
+    },
+    refreshTrackingStatus(row) {
+      getTrackingStatus(row.tracking, row.carrier).then(response => {
+        this.trackingStatusTemp = response.data.statuses
       })
     }
   }
