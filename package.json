@@ -1,5 +1,5 @@
 {
-  "name": "vue-admin-template",
+  "name": "cxmg-admin",
   "version": "1.0.0",
   "license": "MIT",
   "description": "A vue admin template with Element UI & axios & iconfont & permission control & lint",
@@ -12,12 +12,14 @@
   },
   "dependencies": {
     "axios": "0.16.2",
+    "echarts": "^3.8.4",
     "element-ui": "1.4.3",
     "js-cookie": "2.1.4",
     "moment": "^2.19.2",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
     "vue": "2.4.2",
+    "vue-count-to": "^1.0.10",
     "vue-router": "2.7.0",
     "vuex": "2.3.1"
   },

@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import { getList, updateOrder, deleteOrder, createOrder } from '@/api/table'
+import { getList, updateOrder, deleteOrder, createOrder } from '@/api/order'
 import { getTrackingStatus} from '@/api/tracking'
 import moment from 'moment'
 
