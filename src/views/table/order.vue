@@ -252,6 +252,10 @@ export default {
           createOrder(newRow)
           this.fetchData()
         }
+        this.$message({
+          message: '操作成功',
+          type: 'success'
+        })
       }
       row.edit = !row.edit
     },
@@ -263,6 +267,10 @@ export default {
       } else {
         this.list.shift(index, 1)
       }
+      this.$message({
+        message: '删除成功',
+        type: 'success'
+      })
     },
     handleFilter() {
       // this.listQuery.page = 1

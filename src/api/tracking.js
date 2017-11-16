@@ -1,8 +1,13 @@
 import fetch from '@/utils/fetch'
 
 export function getTrackingStatus(tracking, carrier) {
+  var data = {
+    'tracking_number': tracking,
+    'carrier': carrier
+  }
   return fetch({
-    url: '/tracking/' + tracking + '/' + carrier,
-    method: 'get'
+    url: '/tracking',
+    method: 'post',
+    data
   })
 }
