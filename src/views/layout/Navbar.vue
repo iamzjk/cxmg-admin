@@ -3,6 +3,7 @@
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <levelbar></levelbar>
     <tabs-view></tabs-view>
+    <error-log v-if="log.length>0" class="errLog-container" :logsList="log"></error-log>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
@@ -28,12 +29,20 @@ import { mapGetters } from 'vuex'
 import Levelbar from './Levelbar'
 import TabsView from './TabsView'
 import Hamburger from '@/components/Hamburger'
+import ErrorLog from '@/components/ErrLog'
+import errLogStore from '@/store/errLog'
 
 export default {
   components: {
     Levelbar,
     TabsView,
-    Hamburger
+    Hamburger,
+    ErrorLog
+  },
+  data() {
+    return {
+      log: errLogStore.state.errLog
+    }
   },
   computed: {
     ...mapGetters([

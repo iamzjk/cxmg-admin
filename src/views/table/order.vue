@@ -23,23 +23,12 @@
       </div>
       <el-button class="filter-item" @click="handleRefresh">刷新</el-button>
       <el-checkbox class="filter-item" style="margin-left: 8px" @change="handleToggleTracking" v-model="listQuery.showNoTracking">只显示未发货</el-checkbox>
-      <!-- <el-switch class="filter-item" v-model="listQuery.showNoTracking" @change="handleToggleTracking" on-text="未发货" off-text="全部">发货状态
-      </el-switch> -->
-      <div v-if="!listLoading" class="filter-item" style="font-size: 14px; margin-left: 100px;"><span>找到 {{ list.length }} 个订单</span></div>
+      <!-- <div class="filter-item" style="font-size: 14px; margin-left: 100px;"><span>找到 {{ total }} 个订单</span></div> -->
       <!-- new order button -->
       <el-button class="filter-item" style="margin-left: 10px; float: right" @click="handleCreate" icon="plus" type="primary">新建订单</el-button>
     </div>
 
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row>
-      <!-- <el-table-column
-        type="selection"
-        width="55">
-      </el-table-column> -->
-      <!-- <el-table-column label="ID" align="center">
-        <template scope="scope">
-          <span v-show="!scope.row.edit">{{ scope.row.order_id }}</span>
-       </template>
-      </el-table-column> -->
       <el-table-column label="客户" align="center">
         <template scope="scope">
           <el-input v-show="scope.row.edit" size="small" v-model="scope.row.client"></el-input>
@@ -114,6 +103,13 @@
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 分页 -->
+    <div v-show="!listLoading" class="pagination-container">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page"
+        :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -143,6 +139,7 @@ export default {
         address: 'No.1518,  Jinshajiang Road, Putuo District'
       }],
       list: null,
+      total: null,
       listLoading: true,
       listQuery: {
         page: 1,
@@ -231,6 +228,7 @@ export default {
       this.listLoading = true
       getList(this.listQuery).then(response => {
         const orders = response.data.orders
+        this.total = response.data.total
         this.list = orders.map(v => {
           this.$set(v, 'edit', false)
           this.$set(v, 'trackingStatusVisible', false)
@@ -238,6 +236,10 @@ export default {
           return v
         })
         this.listLoading = false
+        this.$message({
+          message: '找到' + this.total + '个订单',
+          type: 'success'
+        })
       })
     },
     editRow(row) {
@@ -289,6 +291,14 @@ export default {
         showNoTracking: false
       }
       this.handleFilter()
+    },
+    handleSizeChange(val) {
+      this.listQuery.limit = val
+      this.fetchData()
+    },
+    handleCurrentChange(val) {
+      this.listQuery.page = val
+      this.fetchData()
     },
     resetTempRow() {
       this.tempRow = {
