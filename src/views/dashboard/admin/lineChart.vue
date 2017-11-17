@@ -95,7 +95,7 @@ export default {
         },
         yAxis: {},
         series: [{
-          name: 'Sales',
+          name: '销售',
           itemStyle: {
             normal: {
               areaStyle: {}
@@ -108,7 +108,7 @@ export default {
           animationEasing: 'cubicInOut'
         },
         {
-          name: 'Gross Profit',
+          name: '利润',
           smooth: true,
           type: 'line',
           itemStyle: {
