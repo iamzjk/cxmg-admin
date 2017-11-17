@@ -250,14 +250,19 @@ export default {
         delete newRow.trackingStatusVisible
         if (row.order_id) {
           updateOrder(newRow)
+          this.$message({
+            message: '编辑成功',
+            type: 'success'
+          })
         } else {
           createOrder(newRow)
           this.fetchData()
+          this.$message({
+            message: '新建成功',
+            type: 'success'
+          })
         }
-        this.$message({
-          message: '操作成功',
-          type: 'success'
-        })
+
       }
       row.edit = !row.edit
     },

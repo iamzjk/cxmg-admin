@@ -51,13 +51,13 @@
 							<span class="display_name">{{name}}</span> -->
 							<div v-if="countReady" >本月统计</div>
 							<div class="info-item">
-								<span class="info-item-text">销售</span>
-								<count-to class="count" :startVal='0' :endVal='statisticsData.sales' :duration='3400'></count-to>
+								<count-to class="sales-count" :startVal='0' :endVal='statisticsData.sales' :duration='3400'></count-to>
+								<br><span class="info-item-text">销售</span>
 								<!-- <icon-svg icon-class="trendChart1" class="dashboard-editor-icon"></icon-svg> -->
 							</div>
 							<div class="info-item">
-								<span class="info-item-text">利润</span>
-								<count-to class="count" :startVal='0' :endVal='statisticsData.grossProfit' :duration='3600'></count-to>
+								<count-to class="profit-count" :startVal='0' :endVal='statisticsData.grossProfit' :duration='3600'></count-to>
+								<br><span class="info-item-text">利润</span>
 								<!-- <icon-svg icon-class="trendChart2" class="dashboard-editor-icon"></icon-svg> -->
 							</div>
 						</el-card>
@@ -156,12 +156,21 @@ export default {
     }
   }
 }
-.info-item .count {
-  font-size: 40px;
-  line-height: 57px;
-  font-weight: 600;
-  color: #1ABB9C;
-  font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;
+.info-item {
+	.sales-count {
+		font-size: 40px;
+		line-height: 57px;
+		font-weight: 600;
+		color: #1ABB9C;
+		font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;
+	}
+	.profit-count {
+		font-size: 40px;
+		line-height: 57px;
+		font-weight: 600;
+		color: #54aff9;
+		font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;
+	}
 }
 .info-item .info-item-text {
   color: dimgrey;
