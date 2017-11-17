@@ -6,7 +6,7 @@ export function getTrackingStatus(tracking, carrier) {
     'carrier': carrier
   }
   return fetch({
-    url: '/tracking/',
+    url: '/tracking',
     method: 'post',
     data
   })
