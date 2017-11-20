@@ -29,6 +29,11 @@
     </div>
 
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row>
+      <!-- <el-table-column label="#" align="center">
+        <template scope="scope">
+          <span>{{ scope.row.order_id }}</span>
+        </template>
+      </el-table-column> -->
       <el-table-column label="客户" align="center">
         <template scope="scope">
           <el-input v-show="scope.row.edit" size="small" v-model="scope.row.client"></el-input>
@@ -99,7 +104,7 @@
       <el-table-column align="center" label="操作" width="150">
         <template scope="scope">
           <el-button :type="scope.row.edit?'success':'default'" @click='editRow(scope.row)' size="small">{{scope.row.edit?'完成':'编辑'}}</el-button>
-          <el-button size="small" type="danger" @click="deleteRow(scope.row.order_id, scope.$index)">删除</el-button>
+          <el-button size="small" type="danger" @click="deleteRow(scope.row, scope.$index)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -158,7 +163,7 @@ export default {
         product: '',
         price: 0,
         cost: 0,
-        quantity: '',
+        quantity: 1,
         tracking: '',
         carrier: '',
         edit: true,
@@ -232,6 +237,7 @@ export default {
         this.list = orders.map(v => {
           this.$set(v, 'edit', false)
           this.$set(v, 'trackingStatusVisible', false)
+          this.$set(v, 'inDatabase', true)
           v.created_time = moment(v.created_time).format('YYYY-MM-DD')
           return v
         })
@@ -248,27 +254,28 @@ export default {
         delete newRow.edit
         delete newRow.created_time
         delete newRow.trackingStatusVisible
-        if (row.order_id) {
+        delete newRow.inDatabase
+        if (row.inDatabase) {
           updateOrder(newRow)
           this.$message({
             message: '编辑成功',
-            type: 'success'
+            type: 'success',
           })
         } else {
           createOrder(newRow)
-          this.fetchData()
+          row.inDatabase = true
           this.$message({
             message: '新建成功',
-            type: 'success'
+            type: 'success',
           })
         }
 
       }
       row.edit = !row.edit
     },
-    deleteRow(order_id, index) {
-      if (order_id) {
-        deleteOrder(order_id).then(response => {
+    deleteRow(row, index) {
+      if (row.inDatabase) {
+        deleteOrder(row.order_id).then(response => {
           this.list.splice(index, 1)
         })
       } else {
@@ -276,7 +283,7 @@ export default {
       }
       this.$message({
         message: '删除成功',
-        type: 'success'
+        type: 'success',
       })
     },
     handleFilter() {
@@ -307,20 +314,22 @@ export default {
     },
     resetTempRow() {
       this.tempRow = {
+        order_id: this.generateOrderId(),
         client: '',
         phone: '',
         product: '',
         price: 0,
         cost: 0,
-        quantity: '',
+        quantity: 1,
         tracking: '',
         carrier: '',
         edit: true,
+        inDatabase: false,
+        created_time: moment().format('YYYY-MM-DD'),
       }
     },
     handleCreate() {
       this.resetTempRow()
-      this.tempRow.created_time = moment().format('YYYY-MM-DD')
       this.list.unshift(this.tempRow)
     },
     handleToggleTracking() {
@@ -340,6 +349,11 @@ export default {
       getTrackingStatus(row.tracking, row.carrier).then(response => {
         this.trackingStatusTemp = response.data.statuses
       })
+    },
+    generateOrderId() {
+      var date = Date.now()
+      var rand = Math.floor(Math.random()*(999-100+1)+100)
+      return date.toString() + '-' + rand.toString()
     }
   }
 }
