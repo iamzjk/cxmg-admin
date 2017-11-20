@@ -25,7 +25,7 @@
       <el-checkbox class="filter-item" style="margin-left: 8px" @change="handleToggleTracking" v-model="listQuery.showNoTracking">只显示未发货</el-checkbox>
       <!-- <div class="filter-item" style="font-size: 14px; margin-left: 100px;"><span>找到 {{ total }} 个订单</span></div> -->
       <!-- new order button -->
-      <el-button class="filter-item" style="margin-left: 10px; float: right" @click="handleCreate" icon="plus" type="primary">新建订单</el-button>
+      <el-button class="filter-item" style="margin-left: 10px; float: right" @click="handleCreate" icon="plus" type="primary">添加订单</el-button>
     </div>
 
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row>
@@ -64,6 +64,12 @@
           <span v-show="!scope.row.edit">{{ scope.row.cost }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="运费" align="center">
+        <template scope="scope">
+          <el-input v-show="scope.row.edit" size="small" v-model="scope.row.shipping"></el-input>
+          <span v-show="!scope.row.edit">{{ scope.row.shipping }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="数量" align="center">
         <template scope="scope">
           <el-input v-show="scope.row.edit" size="small" v-model="scope.row.quantity"></el-input>
@@ -76,7 +82,7 @@
           <span v-show="!scope.row.edit">{{ scope.row.carrier }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="单号" align="center" width="130">
+      <el-table-column label="单号" align="center" width="125">
         <template scope="scope">
           <el-input v-show="scope.row.edit" size="small" v-model="scope.row.tracking"></el-input>
           <el-button style="user-select: text;" type="text" @click="showTrackingStatus(scope.row)" v-show="!scope.row.edit">{{ scope.row.tracking }}</el-button>
@@ -95,13 +101,13 @@
           </el-dialog>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="订单日期" width="130">
+      <el-table-column align="center" label="订单日期" width="110">
         <template scope="scope">
           <!-- <i class="el-icon-time"></i> -->
           <span>{{scope.row.created_time}}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" width="150">
+      <el-table-column align="center" label="操作" width="130">
         <template scope="scope">
           <el-button :type="scope.row.edit?'success':'default'" @click='editRow(scope.row)' size="small">{{scope.row.edit?'完成':'编辑'}}</el-button>
           <el-button size="small" type="danger" @click="deleteRow(scope.row, scope.$index)">删除</el-button>
@@ -157,17 +163,7 @@ export default {
         dateRange: '',
         showNoTracking: false
       },
-      tempRow: {
-        client: '',
-        phone: '',
-        product: '',
-        price: 0,
-        cost: 0,
-        quantity: 1,
-        tracking: '',
-        carrier: '',
-        edit: true,
-      },
+      tempRow: null,
       searchOptions: [{
         value: 'client',
         label: '客户'
@@ -320,6 +316,7 @@ export default {
         product: '',
         price: 0,
         cost: 0,
+        shipping: 0,
         quantity: 1,
         tracking: '',
         carrier: '',
@@ -361,13 +358,14 @@ export default {
 </script>
 
 <style>
-/* .app-container {
+.app-container {
   zoom: 95%;
-} */
+}
 /* .el-table {
   zoom: 80%;
   font-size: 14px;
 } */
+
 .el-dialog {
   top: 10%;
 }
