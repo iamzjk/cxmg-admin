@@ -108,7 +108,7 @@ export default {
           animationEasing: 'cubicInOut'
         },
         {
-          name: '利润',
+          name: '毛利',
           smooth: true,
           type: 'line',
           itemStyle: {

@@ -25,13 +25,7 @@
 		<el-row :gutter="20">
 			<el-col :span="16">
 				<el-row>
-					<el-card class="box-card">
-					  	<div slot="header" class="clearfix">
-							<span>2017年销售统计 (RMB)</span>
-							<!-- <el-button style="float: right; padding: 3px 0" type="text">Refresh</el-button> -->
-						</div>
-						<monthly-sales-table></monthly-sales-table>
-					</el-card>
+					<monthly-sales-table></monthly-sales-table>
 				</el-row>
 				<el-row>
 					<el-card class="box-card">
@@ -57,7 +51,7 @@
 							</div>
 							<div class="info-item">
 								<count-to class="profit-count" :startVal='0' :endVal='statisticsData.grossProfit' :duration='3600'></count-to>
-								<br><span class="info-item-text">利润</span>
+								<br><span class="info-item-text">毛利</span>
 								<!-- <icon-svg icon-class="trendChart2" class="dashboard-editor-icon"></icon-svg> -->
 							</div>
 						</el-card>
@@ -91,7 +85,7 @@ export default {
     panThumb,
     // todoList,
     // Github,
-	// pieChart,
+		// pieChart,
     // barChart,
     lineChart,
 	monthlySalesTable,
