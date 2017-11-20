@@ -17,6 +17,7 @@ export function getClientRankingStats(period) {
   } else {
     var startDate = null
     var endDate = new Date()
+    endDate.setDate(endDate.getDate() + 1)
     var y = endDate.getFullYear()
     var m = endDate.getMonth()
     if (period === 'thisMonth') {
