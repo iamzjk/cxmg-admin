@@ -7,6 +7,7 @@ import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts 主题
 import { debounce, getDaysArray } from '@/utils'
 import { getDailySalesSummary } from '@/api/stats'
+import moment from 'moment'
 
 export default {
   props: {
@@ -68,11 +69,15 @@ export default {
   },
   methods: {
     initChart() {
+      var todayDate = moment.utc()
+      var year = todayDate.year()
+      var month = todayDate.month() + 1
+
       this.chart = echarts.init(this.$el, 'macarons')
-      var days = getDaysArray(2017, 11)
+      var days = getDaysArray(year, month)
       this.chart.setOption({
         title: {
-          text: '本月每日销量走势图',
+          text: year.toString() + '年' + month.toString() + '月每日销量走势图',
           textStyle: {
             fontSize: 16
           }

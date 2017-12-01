@@ -43,7 +43,7 @@
 								</pan-thumb>
 							</div>
 							<span class="display_name">{{name}}</span> -->
-							<div v-if="countReady" >本月统计</div>
+							<div v-if="countReady" v-bind="date" >{{ date.year }}月统计</div>
 							<div class="info-item">
 								<count-to class="sales-count" :startVal='0' :endVal='statisticsData.sales' :duration='3400'></count-to>
 								<br><span class="info-item-text">销售</span>
@@ -96,9 +96,13 @@ export default {
       statisticsData: {
         sales: null,
         grossProfit: null
-	  },
-	  countReady: false
-    };
+	  	},
+			countReady: false,
+			date: {
+				year: null,
+				month: null,
+			}
+		};
   },
   created() {
     this.fetchCountToData()
@@ -106,9 +110,11 @@ export default {
   methods: {
     fetchCountToData() {
 	  getMonthlySalesCountTo().then(response => {
-		this.statisticsData.sales = response.data.sales
-		this.statisticsData.grossProfit = response.data.gross_profit
-		this.countReady = true
+			this.date.year = response.data.year
+			this.date.month = response.data.month
+			this.statisticsData.sales = response.data.sales
+			this.statisticsData.grossProfit = response.data.gross_profit
+			this.countReady = true
 	  })
 	}
   },
