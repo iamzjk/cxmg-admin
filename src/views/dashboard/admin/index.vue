@@ -43,7 +43,7 @@
 								</pan-thumb>
 							</div>
 							<span class="display_name">{{name}}</span> -->
-							<div v-if="countReady" v-bind="date" >{{ date.year }}月统计</div>
+							<div v-if="countReady" v-bind="date" >{{ date.month }}月统计</div>
 							<div class="info-item">
 								<count-to class="sales-count" :startVal='0' :endVal='statisticsData.sales' :duration='3400'></count-to>
 								<br><span class="info-item-text">销售</span>
