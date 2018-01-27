@@ -76,29 +76,54 @@
           <span v-show="!scope.row.edit">{{ scope.row.quantity }}</span>
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="快递" align="center">
+      <el-table-column class-name="status-col" label="快递" align="center" width="130">
         <template scope="scope">
+          <div>
           <el-input v-show="scope.row.edit" size="small" v-model="scope.row.carrier"></el-input>
           <span v-show="!scope.row.edit">{{ scope.row.carrier }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="单号" align="center" width="125">
-        <template scope="scope">
+          </div>
+          <div>
           <el-input v-show="scope.row.edit" size="small" v-model="scope.row.tracking"></el-input>
-          <el-button style="user-select: text;" type="text" @click="showTrackingStatus(scope.row)" v-show="!scope.row.edit">{{ scope.row.tracking }}</el-button>
+          <el-button style="user-select: text;" type="text" @click="showTrackingStatus(scope.row, scope.row.tracking, scope.row.carrier)" v-show="!scope.row.edit">{{ scope.row.tracking }}</el-button>
           <!-- tracking status dialog -->
           <el-dialog title="快递状态" :visible.sync="scope.row.trackingStatusVisible">
             <span slot="title">
-              <div style="margin-left: 15px; float: left; font-weight: bold;">{{scope.row.client}} {{scope.row.tracking}}</div>
+              <div style="margin-left: 15px; float: left; font-weight: bold;">{{scope.row.client}}</div>
             </span>
             <el-table v-loading="trackingLoading" :data="trackingStatusTemp" element-loading-text="拼命查询中...">
               <el-table-column property="time" label="日期时间" width="180" align= "center"></el-table-column>
               <el-table-column property="status" label="状态" align= "center"></el-table-column>
             </el-table>
             <span slot="footer">
-              <el-button type="default" size="medium" @click="showTrackingStatus(scope.row)">刷新</el-button>
+              <el-button type="default" size="medium" @click="showTrackingStatus(scope.row, scope.row.tracking, scope.row.carrier)">刷新</el-button>
             </span>
           </el-dialog>
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="转运" align="center" width="130">
+        <template scope="scope">
+          <div>
+          <el-input v-show="scope.row.edit" size="small" v-model="scope.row.forward_carrier"></el-input>
+          <span v-show="!scope.row.edit">{{ scope.row.forward_carrier }}</span>
+          </div>
+          <div>
+          <el-input v-show="scope.row.edit" size="small" v-model="scope.row.forward_tracking"></el-input>
+          <el-button style="user-select: text;" type="text" @click="showTrackingStatus(scope.row, scope.row.forward_tracking, scope.row.forward_carrier)" v-show="!scope.row.edit">{{ scope.row.forward_tracking }}</el-button>
+          <!-- tracking status dialog -->
+          <el-dialog title="快递状态" :visible.sync="scope.row.trackingStatusVisible">
+            <span slot="title">
+              <div style="margin-left: 15px; float: left; font-weight: bold;">{{scope.row.client}}</div>
+            </span>
+            <el-table v-loading="trackingLoading" :data="trackingStatusTemp" element-loading-text="拼命查询中...">
+              <el-table-column property="time" label="日期时间" width="180" align= "center"></el-table-column>
+              <el-table-column property="status" label="状态" align= "center"></el-table-column>
+            </el-table>
+            <span slot="footer">
+              <el-button type="default" size="medium" @click="showTrackingStatus(scope.row, scope.row.forward_tracking, scope.row.forward_carrier)">刷新</el-button>
+            </span>
+          </el-dialog>
+          </div>
         </template>
       </el-table-column>
       <el-table-column align="center" label="订单日期" width="110">
@@ -333,17 +358,17 @@ export default {
       // this.listQuery.showNoTracking = !this.listQuery.showNoTracking
       this.handleFilter()
     },
-    showTrackingStatus(row) {
+    showTrackingStatus(row, tracking, carrier) {
       this.trackingStatusTemp = []
       this.trackingLoading = true
       row.trackingStatusVisible = true
-      getTrackingStatus(row.tracking, row.carrier).then(response => {
+      getTrackingStatus(tracking, carrier).then(response => {
         this.trackingStatusTemp = response.data.statuses
         this.trackingLoading = false
       })
     },
-    refreshTrackingStatus(row) {
-      getTrackingStatus(row.tracking, row.carrier).then(response => {
+    refreshTrackingStatus(row, tracking, carrier) {
+      getTrackingStatus(tracking, carrier).then(response => {
         this.trackingStatusTemp = response.data.statuses
       })
     },
