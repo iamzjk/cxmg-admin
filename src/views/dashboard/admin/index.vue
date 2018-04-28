@@ -44,14 +44,16 @@
 							</div>
 							<span class="display_name">{{name}}</span> -->
 							<div v-if="countReady" v-bind="date" >{{ date.month }}月统计</div>
-							<div class="info-item">
-								<count-to class="sales-count" :startVal='0' :endVal='statisticsData.sales' :duration='3400'></count-to>
-								<br><span class="info-item-text">销售</span>
+							<div class="info-item sales-count-to">
+								<count-to class="sales-count cny" :startVal='0' :endVal='statisticsData.sales' :duration='3400'></count-to>
+								<!-- <br><span class="info-item-text title">销售</span> -->
+								<br><span class="info-item-text usd">{{ statisticsData.salesUSD }}</span>
 								<!-- <icon-svg icon-class="trendChart1" class="dashboard-editor-icon"></icon-svg> -->
 							</div>
-							<div class="info-item">
-								<count-to class="profit-count" :startVal='0' :endVal='statisticsData.grossProfit' :duration='3600'></count-to>
-								<br><span class="info-item-text">毛利</span>
+							<div class="info-item sales-count-to">
+								<count-to class="profit-count cny" :startVal='0' :endVal='statisticsData.grossProfit' :duration='3600'></count-to>
+								<!-- <br><span class="info-item-text title">毛利</span> -->
+								<br><span class="info-item-text usd">{{ statisticsData.grossProfitUSD }}</span>
 								<!-- <icon-svg icon-class="trendChart2" class="dashboard-editor-icon"></icon-svg> -->
 							</div>
 						</el-card>
@@ -94,8 +96,10 @@ export default {
   data() {
     return {
       statisticsData: {
-        sales: null,
-        grossProfit: null
+				sales: null,
+				salesUSD: null,
+				grossProfit: null,
+				grossProfitUSD: null
 	  	},
 			countReady: false,
 			date: {
@@ -113,7 +117,9 @@ export default {
 			this.date.year = response.data.year
 			this.date.month = response.data.month
 			this.statisticsData.sales = response.data.sales
+			this.statisticsData.salesUSD = response.data.sales_usd
 			this.statisticsData.grossProfit = response.data.gross_profit
+			this.statisticsData.grossProfitUSD = response.data.gross_profit_usd
 			this.countReady = true
 	  })
 	}
@@ -164,8 +170,22 @@ export default {
 		color: #1ABB9C;
 		font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;
 	}
+	.sales-count-usd {
+		font-size: 35px;
+		line-height: 57px;
+		font-weight: 600;
+		color: #1ABB9C;
+		font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;
+	}
 	.profit-count {
 		font-size: 40px;
+		line-height: 57px;
+		font-weight: 600;
+		color: #54aff9;
+		font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif;
+	}
+	.profit-count-usd {
+		font-size: 35px;
 		line-height: 57px;
 		font-weight: 600;
 		color: #54aff9;
@@ -174,5 +194,12 @@ export default {
 }
 .info-item .info-item-text {
   color: dimgrey;
+}
+.sales-count-to .title {
+	float: left
+}
+.sales-count-to .usd {
+	float: right;
+	margin-right: 15px
 }
 </style>
