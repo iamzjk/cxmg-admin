@@ -37,13 +37,7 @@
 				<el-row>
 					<el-col>
 						<el-card class="box-card">
-							<!-- <div slot="header" class="box-card-header">
-								<pan-thumb class="panThumb" :image="avatar"> 你的权限:
-									<span class="pan-info-roles" :key='item' v-for="item in roles">{{item}}</span>
-								</pan-thumb>
-							</div>
-							<span class="display_name">{{name}}</span> -->
-							<div v-if="countReady" v-bind="date" >{{ date.month }}月统计</div>
+							<div v-if="countReady" v-bind="date" >{{ date.month }}月统计<span class="exchange-rate">美元实时汇率 {{ statisticsData.exchangeRate }}</span></div>
 							<div class="info-item sales-count-to">
 								<count-to class="sales-count cny" :startVal='0' :endVal='statisticsData.sales' :duration='3400'></count-to>
 								<!-- <br><span class="info-item-text title">销售</span> -->
@@ -120,6 +114,7 @@ export default {
 			this.statisticsData.salesUSD = response.data.sales_usd
 			this.statisticsData.grossProfit = response.data.gross_profit
 			this.statisticsData.grossProfitUSD = response.data.gross_profit_usd
+			this.statisticsData.exchangeRate = response.data.exchange_rate
 			this.countReady = true
 	  })
 	}
@@ -201,5 +196,8 @@ export default {
 .sales-count-to .usd {
 	float: right;
 	margin-right: 15px
+}
+.exchange-rate {
+	float: right;
 }
 </style>
