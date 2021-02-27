@@ -16,7 +16,7 @@
           </el-dropdown-item>
         </router-link>
           <el-dropdown-item>
-            <a target="_blank" href='http://cxmg.shop'>快递查询</a>
+            <a target="_blank" href='https://cxmg.nbduohao.com'>快递查询</a>
           </el-dropdown-item>
         <el-dropdown-item divided><span @click="logout" style="display:block;">退出</span></el-dropdown-item>
       </el-dropdown-menu>
